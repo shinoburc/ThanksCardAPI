@@ -8,6 +8,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20190531043106_AddThanksCardTag.cs" />
     <Compile Remove="Migrations\20190531043106_AddThanksCardTag.Designer.cs" />
+    <Compile Remove="Migrations\20210526011908_ThanksCardAPI.cs" />
+    <Compile Remove="Migrations\20210526011908_ThanksCardAPI.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
