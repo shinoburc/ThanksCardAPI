@@ -33,6 +33,22 @@ namespace ThanksCardAPI.Controllers
         }
         #endregion
 
+        #region GetNumberThanksCards
+        // GET: api/ThanksCard/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ThanksCard>> GetNumberThanksCards(long id)
+        {
+            var card = await _context.ThanksCards.FindAsync(id);
+
+            if (card == null)
+            {
+                return NotFound();
+            }
+
+            return card;
+        }
+        #endregion
+
         // POST api/ThanksCard
         [HttpPost]
         public async Task<ActionResult<ThanksCard>> Post([FromBody] ThanksCard thanksCard)
