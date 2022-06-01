@@ -1,7 +1,7 @@
 ﻿#nullable disable
 using Microsoft.EntityFrameworkCore;
 
-namespace ThanksCardAPI.Models
+namespace ThanksCardServer2.Models
 {
     public class ApplicationContext : DbContext
     {
@@ -9,10 +9,13 @@ namespace ThanksCardAPI.Models
             : base(options)
         {
         }
-
-        public DbSet<User> Users { get; set; }
-        public DbSet<Department> Departments { get; set; }
+        public DbSet<Belong> Belongs { get; set; }
+        public DbSet<Employee> Employees { get; set; }
         public DbSet<ThanksCard> ThanksCards { get; set; }
-        public DbSet<Tag> Tag { get; set; }
+        public DbSet<Title> Titles { get; set; }    
+        public DbSet<Template> Templates { get; set; }
+        public DbSet<Midle>Midles { get; set; }
+        public DbSet<Reply> Replys { get; set; }
     }
 }
+
