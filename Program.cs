@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using ThanksCardAPI.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using ThanksCardServer2.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 

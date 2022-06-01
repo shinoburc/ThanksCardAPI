@@ -19,6 +19,6 @@ namespace ThanksCardServer2.Models
         public virtual Template Template { get; set; }
       public long Good_Number { get; set; }
       public string Alreadtread { get; set; }
-      public long sonzai_Id { get; set; }
+      public long Sonzai_Id { get; set; }
     }
 }

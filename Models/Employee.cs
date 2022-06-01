@@ -12,5 +12,6 @@ namespace ThanksCardServer2.Models
         public long Sonzai_Id { get; set; }
         public long Belongs_Id { get; set; }
         public virtual Belong Belongs { get; set; }
+        public bool IsEmployee { get; set; }
     }
 }
