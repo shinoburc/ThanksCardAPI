@@ -16,7 +16,7 @@ namespace ThanksCardServer2.Controllers
         public LogonController(ApplicationContext context)
         {
             _context = context;
-            if(_context.Employees.Count() == 0)
+            if (_context.Employees.Count() == 0)
             {
                 _context.Employees.Add(new Employee { Id = 0001, Name = "比嘉　哲平", Password = "Higa0001", IsEmployee = true, Sonzai_Id = 1 });
                 _context.Employees.Add(new Employee { Id = 0002, Name = "山田　慎一", Password = "Yama0002", IsEmployee = true, Sonzai_Id = 1 });
@@ -71,7 +71,12 @@ namespace ThanksCardServer2.Controllers
                 _context.Employees.Add(new Employee { Id = 0051, Name = "水谷　仁美", Password = "Mizu0051", IsEmployee = false, Sonzai_Id = 1 });
                 _context.Employees.Add(new Employee { Id = 0052, Name = "中村　賢一", Password = "Naka0052", IsEmployee = false, Sonzai_Id = 1 });
                 _context.Employees.Add(new Employee { Id = 0053, Name = "高田　麻美", Password = "Taka0053", IsEmployee = false, Sonzai_Id = 1 });
-            }
+                _context.Employees.Add(new Employee { Id = 0054, Name = "伊藤　宏明", Password = "Itou0054", IsEmployee = false, Sonzai_Id = 1 });
+                _context.Employees.Add(new Employee { Id = 0055, Name = "吉田　宏明", Password = "Yosh0055", IsEmployee = false, Sonzai_Id = 1 });
+                _
+
+
+          }
         }
     }
 }
