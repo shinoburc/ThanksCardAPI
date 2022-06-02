@@ -8,7 +8,7 @@ using ThanksCardServer2.Models;
 
 #nullable disable
 
-namespace ThanksCardServer2.Migrations
+namespace ThanksCardAPI.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
     partial class ApplicationContextModelSnapshot : ModelSnapshot
@@ -17,7 +17,7 @@ namespace ThanksCardServer2.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.5")
+                .HasAnnotation("ProductVersion", "6.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -33,13 +33,18 @@ namespace ThanksCardServer2.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<long>("Parent_Id")
+                    b.Property<long?>("ParentId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("sonzai_id")
+                    b.Property<long?>("Parent_Id")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("SonzaiId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
 
                     b.ToTable("Belongs");
                 });
@@ -60,6 +65,9 @@ namespace ThanksCardServer2.Migrations
 
                     b.Property<long>("Cd")
                         .HasColumnType("bigint");
+
+                    b.Property<bool>("IsEmployee")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -88,15 +96,7 @@ namespace ThanksCardServer2.Migrations
                     b.Property<long>("Reply_Id")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("ThanksCardId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ThanksCard_Id")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ThanksCardId");
 
                     b.ToTable("Midles");
                 });
@@ -118,14 +118,9 @@ namespace ThanksCardServer2.Migrations
                     b.Property<int>("Sonzai_Id")
                         .HasColumnType("integer");
 
-                    b.Property<long>("ThanksCardId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
-
-                    b.HasIndex("ThanksCardId");
 
                     b.ToTable("Replys");
                 });
@@ -149,60 +144,6 @@ namespace ThanksCardServer2.Migrations
                     b.ToTable("Templates");
                 });
 
-            modelBuilder.Entity("ThanksCardServer2.Models.ThanksCard", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Alreadtread")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long>("DestinationId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("Good_Number")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("SenderId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("TemplateId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("Template_Id")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("ThanksCard_Content")
-                        .HasColumnType("text");
-
-                    b.Property<long?>("TitleId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("Title_Id")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("sonzai_Id")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DestinationId");
-
-                    b.HasIndex("SenderId");
-
-                    b.HasIndex("TemplateId");
-
-                    b.HasIndex("TitleId");
-
-                    b.ToTable("ThanksCards");
-                });
-
             modelBuilder.Entity("ThanksCardServer2.Models.Title", b =>
                 {
                     b.Property<long>("Id")
@@ -219,6 +160,15 @@ namespace ThanksCardServer2.Migrations
                     b.ToTable("Titles");
                 });
 
+            modelBuilder.Entity("ThanksCardServer2.Models.Belong", b =>
+                {
+                    b.HasOne("ThanksCardServer2.Models.Belong", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
+                });
+
             modelBuilder.Entity("ThanksCardServer2.Models.Employee", b =>
                 {
                     b.HasOne("ThanksCardServer2.Models.Belong", "Belongs")
@@ -226,15 +176,6 @@ namespace ThanksCardServer2.Migrations
                         .HasForeignKey("BelongsId");
 
                     b.Navigation("Belongs");
-                });
-
-            modelBuilder.Entity("ThanksCardServer2.Models.Midle", b =>
-                {
-                    b.HasOne("ThanksCardServer2.Models.ThanksCard", "ThanksCard")
-                        .WithMany()
-                        .HasForeignKey("ThanksCardId");
-
-                    b.Navigation("ThanksCard");
                 });
 
             modelBuilder.Entity("ThanksCardServer2.Models.Reply", b =>
@@ -245,46 +186,12 @@ namespace ThanksCardServer2.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ThanksCardServer2.Models.ThanksCard", "ThanksCard")
-                        .WithMany()
-                        .HasForeignKey("ThanksCardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Employee");
-
-                    b.Navigation("ThanksCard");
                 });
 
-            modelBuilder.Entity("ThanksCardServer2.Models.ThanksCard", b =>
+            modelBuilder.Entity("ThanksCardServer2.Models.Belong", b =>
                 {
-                    b.HasOne("ThanksCardServer2.Models.Employee", "Destination")
-                        .WithMany()
-                        .HasForeignKey("DestinationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ThanksCardServer2.Models.Employee", "Sender")
-                        .WithMany()
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ThanksCardServer2.Models.Template", "Template")
-                        .WithMany()
-                        .HasForeignKey("TemplateId");
-
-                    b.HasOne("ThanksCardServer2.Models.Title", "Title")
-                        .WithMany()
-                        .HasForeignKey("TitleId");
-
-                    b.Navigation("Destination");
-
-                    b.Navigation("Sender");
-
-                    b.Navigation("Template");
-
-                    b.Navigation("Title");
+                    b.Navigation("Children");
                 });
 #pragma warning restore 612, 618
         }

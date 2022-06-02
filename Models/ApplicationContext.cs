@@ -11,7 +11,6 @@ namespace ThanksCardServer2.Models
         }
         public DbSet<Belong> Belongs { get; set; }
         public DbSet<Employee> Employees { get; set; }
-        public DbSet<ThanksCard> ThanksCards { get; set; }
         public DbSet<Title> Titles { get; set; }    
         public DbSet<Template> Templates { get; set; }
         public DbSet<Midle>Midles { get; set; }
