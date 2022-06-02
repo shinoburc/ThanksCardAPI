@@ -73,10 +73,33 @@ namespace ThanksCardServer2.Controllers
                 _context.Employees.Add(new Employee { Id = 0053, Name = "高田　麻美", Password = "Taka0053", IsEmployee = false, Sonzai_Id = 1 });
                 _context.Employees.Add(new Employee { Id = 0054, Name = "伊藤　宏明", Password = "Itou0054", IsEmployee = false, Sonzai_Id = 1 });
                 _context.Employees.Add(new Employee { Id = 0055, Name = "吉田　宏明", Password = "Yosh0055", IsEmployee = false, Sonzai_Id = 1 });
-                _
-
-
+                _context.Employees.Add(new Employee { Id = 0056, Name = "池田　正明", Password = "Iked0056", IsEmployee = false, Sonzai_Id = 1 });
+                _context.Employees.Add(new Employee { Id = 0057, Name = "清水　裕也", Password = "Shim0057", IsEmployee = false, Sonzai_Id = 1 });
+                _context.Employees.Add(new Employee { Id = 0058, Name = "早川　和也", Password = "Haya0058", IsEmployee = false, Sonzai_Id = 1 });
+                _context.Employees.Add(new Employee { Id = 0059, Name = "田中　尚孝", Password = "Tana0059", IsEmployee = false, Sonzai_Id = 1 });
+                _context.Employees.Add(new Employee { Id = 0060, Name = "土井　  徹", Password = "Doii0060", IsEmployee = false, Sonzai_Id = 1 });
+                _context.Employees.Add(new Employee { Id = 0061, Name = "遠藤　幸夫", Password = "Endo0061", IsEmployee = false, Sonzai_Id = 1 });
+                _context.Employees.Add(new Employee { Id = 0062, Name = "下田　雄一", Password = "Shim0062", IsEmployee = false, Sonzai_Id = 1 });
+                _context.Employees.Add(new Employee { Id = 0063, Name = "吉村　亜希子", Password = "Yosh0063", IsEmployee = false, Sonzai_Id = 1});
+                _context.Employees.Add(new Employee { Id = 0064, Name = "篠原　真希", Password = "Shin0064", IsEmployee = false, Sonzai_Id = 1 });
+                _context.Employees.Add(new Employee { Id = 0065, Name = "青木　亜耶", Password = "Aoki0065", IsEmployee = false, Sonzai_Id = 1 });
+                _context.Employees.Add(new Employee { Id = 0066, Name = "高橋　真也", Password = "Taka0066", IsEmployee = false, Sonzai_Id = 1 });
+                _context.Employees.Add(new Employee { Id = 0067, Name = "藤澤　由紀", Password = "Fuji0067", IsEmployee = false, Sonzai_Id = 1 });
+                _context.Employees.Add(new Employee { Id = 0068, Name = "遠藤　真之", Password = "Endo0068", IsEmployee = false, Sonzai_Id = 1 });
+                _context.Employees.Add(new Employee { Id = 0069, Name = "川端　  武", Password = "Kawa0069", IsEmployee = false, Sonzai_Id = 1 });
+                _context.Employees.Add(new Employee { Id = 0070, Name = "友寄　隆利", Password = "Tomo0070", IsEmployee = false, Sonzai_Id = 1 });
+                _context.SaveChanges();
           }
+        }
+        [HttpPost]
+        public ActionResult<Employee> Post([FromBody] Employee employee)
+        {
+            var authorizeEmployee = _context.Employees.SingleOrDefault(x => x.Id == employee.Id  &&   x.Password == employee.Password );
+            if (authorizeEmployee == null || employee.Sonzai_Id == 0)
+            {
+                return NotFound();
+            }
+            return authorizeEmployee;
         }
     }
 }
