@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using ThanksCardAPI.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using ThanksCardServer2.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddJsonOptions(option =>
                 option.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddDbContext<ApplicationContext>(opt =>
-     opt.UseNpgsql("Host=localhost; Database=webapp1; Username=postgres; Password=postgres"));
+     opt.UseNpgsql("Host=localhost; Database=thankscard; Username=postgres; Password=postgres"));
 // DateTime å^ Ç UTC Ç≈ ÉfÅ[É^Ç PostgreSQL Ç…ìoò^
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
