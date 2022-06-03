@@ -15,6 +15,7 @@ namespace ThanksCardServer2.Models
         public DbSet<Template> Templates { get; set; }
         public DbSet<Midle>Midles { get; set; }
         public DbSet<Reply> Replys { get; set; }
+        public DbSet<ThanksCard> ThanksCards { get; set; }
     }
 }
 

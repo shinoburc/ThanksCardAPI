@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace ThanksCardAPI.Migrations
 {
-    public partial class AddDebug3Model : Migration
+    public partial class AddMidleModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,7 +18,7 @@ namespace ThanksCardAPI.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
                     SonzaiId = table.Column<long>(type: "bigint", nullable: false),
-                    Parent_Id = table.Column<long>(type: "bigint", nullable: true),
+                    Parent_Id = table.Column<long>(type: "bigint", nullable: false),
                     ParentId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
@@ -28,19 +29,6 @@ namespace ThanksCardAPI.Migrations
                         column: x => x.ParentId,
                         principalTable: "Belongs",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Midles",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Reply_Id = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Midles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -115,6 +103,71 @@ namespace ThanksCardAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ThanksCards",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    SenderId = table.Column<long>(type: "bigint", nullable: false),
+                    DestinationId = table.Column<long>(type: "bigint", nullable: false),
+                    TitleId = table.Column<long>(type: "bigint", nullable: false),
+                    Content = table.Column<string>(type: "text", nullable: true),
+                    TemplateId = table.Column<long>(type: "bigint", nullable: false),
+                    GoodNumber = table.Column<long>(type: "bigint", nullable: false),
+                    Alreadyread = table.Column<string>(type: "text", nullable: true),
+                    ThanksCardSonzaiId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ThanksCards", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ThanksCards_Employees_DestinationId",
+                        column: x => x.DestinationId,
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ThanksCards_Employees_SenderId",
+                        column: x => x.SenderId,
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ThanksCards_Titles_TitleId",
+                        column: x => x.TitleId,
+                        principalTable: "Titles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Midles",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ThanksCardId = table.Column<long>(type: "bigint", nullable: false),
+                    ReplyId = table.Column<long>(type: "bigint", nullable: false),
+                    ReplyId1 = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Midles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Midles_Replys_ReplyId1",
+                        column: x => x.ReplyId,
+                        principalTable: "Replys",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Midles_ThanksCards_ThanksCardId",
+                        column: x => x.ThanksCardId,
+                        principalTable: "ThanksCards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Belongs_ParentId",
                 table: "Belongs",
@@ -126,9 +179,34 @@ namespace ThanksCardAPI.Migrations
                 column: "BelongsId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Midles_ReplyId1",
+                table: "Midles",
+                column: "ReplyId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Midles_ThanksCardId",
+                table: "Midles",
+                column: "ThanksCardId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Replys_EmployeeId",
                 table: "Replys",
                 column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ThanksCards_DestinationId",
+                table: "ThanksCards",
+                column: "DestinationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ThanksCards_SenderId",
+                table: "ThanksCards",
+                column: "SenderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ThanksCards_TitleId",
+                table: "ThanksCards",
+                column: "TitleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -137,16 +215,19 @@ namespace ThanksCardAPI.Migrations
                 name: "Midles");
 
             migrationBuilder.DropTable(
-                name: "Replys");
-
-            migrationBuilder.DropTable(
                 name: "Templates");
 
             migrationBuilder.DropTable(
-                name: "Titles");
+                name: "Replys");
+
+            migrationBuilder.DropTable(
+                name: "ThanksCards");
 
             migrationBuilder.DropTable(
                 name: "Employees");
+
+            migrationBuilder.DropTable(
+                name: "Titles");
 
             migrationBuilder.DropTable(
                 name: "Belongs");
