@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ThanksCardAPI.Migrations
 {
-    public partial class AddMidleModel : Migration
+    public partial class AddMonthModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -109,9 +109,9 @@ namespace ThanksCardAPI.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    SenderId = table.Column<long>(type: "bigint", nullable: false),
-                    DestinationId = table.Column<long>(type: "bigint", nullable: false),
+                    Date = table.Column<DateOnly>(type: "date", nullable: false),
+                    FromId = table.Column<long>(type: "bigint", nullable: false),
+                    ToId = table.Column<long>(type: "bigint", nullable: false),
                     TitleId = table.Column<long>(type: "bigint", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: true),
                     TemplateId = table.Column<long>(type: "bigint", nullable: false),
@@ -123,14 +123,14 @@ namespace ThanksCardAPI.Migrations
                 {
                     table.PrimaryKey("PK_ThanksCards", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ThanksCards_Employees_DestinationId",
-                        column: x => x.DestinationId,
+                        name: "FK_ThanksCards_Employees_FromId",
+                        column: x => x.FromId,
                         principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ThanksCards_Employees_SenderId",
-                        column: x => x.SenderId,
+                        name: "FK_ThanksCards_Employees_ToId",
+                        column: x => x.ToId,
                         principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -157,7 +157,7 @@ namespace ThanksCardAPI.Migrations
                     table.PrimaryKey("PK_Midles", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Midles_Replys_ReplyId1",
-                        column: x => x.ReplyId,
+                        column: x => x.ReplyId1,
                         principalTable: "Replys",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -194,19 +194,19 @@ namespace ThanksCardAPI.Migrations
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ThanksCards_DestinationId",
+                name: "IX_ThanksCards_FromId",
                 table: "ThanksCards",
-                column: "DestinationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ThanksCards_SenderId",
-                table: "ThanksCards",
-                column: "SenderId");
+                column: "FromId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ThanksCards_TitleId",
                 table: "ThanksCards",
                 column: "TitleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ThanksCards_ToId",
+                table: "ThanksCards",
+                column: "ToId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -11,6 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 // JSONシリアル化で循環参照を無視
 builder.Services.AddControllers().AddJsonOptions(option =>
                 option.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+builder.Services
+    .AddControllers(options => options.UseDateOnlyTimeOnlyStringConverters())
+    .AddJsonOptions(options => options.UseDateOnlyTimeOnlyStringConverters());
 builder.Services.AddDbContext<ApplicationContext>(opt =>
      opt.UseNpgsql("Host=localhost; Database=ThanksCardSistem; Username=postgres; Password=postgres"));
 // DateTime 型 を UTC で データを PostgreSQL に登録

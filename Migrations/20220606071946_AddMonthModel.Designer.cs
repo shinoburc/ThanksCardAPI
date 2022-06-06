@@ -12,14 +12,14 @@ using ThanksCardServer2.Models;
 namespace ThanksCardAPI.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220603053209_AddMidleModel")]
-    partial class AddMidleModel
+    [Migration("20220606071946_AddMonthModel")]
+    partial class AddMonthModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.1")
+                .HasAnnotation("ProductVersion", "6.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -170,16 +170,13 @@ namespace ThanksCardAPI.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
 
-                    b.Property<long>("DestinationId")
+                    b.Property<long>("FromId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("GoodNumber")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("SenderId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("TemplateId")
@@ -191,13 +188,16 @@ namespace ThanksCardAPI.Migrations
                     b.Property<long>("TitleId")
                         .HasColumnType("bigint");
 
+                    b.Property<long>("ToId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("DestinationId");
-
-                    b.HasIndex("SenderId");
+                    b.HasIndex("FromId");
 
                     b.HasIndex("TitleId");
+
+                    b.HasIndex("ToId");
 
                     b.ToTable("ThanksCards");
                 });
@@ -266,15 +266,9 @@ namespace ThanksCardAPI.Migrations
 
             modelBuilder.Entity("ThanksCardServer2.Models.ThanksCard", b =>
                 {
-                    b.HasOne("ThanksCardServer2.Models.Employee", "Destination")
+                    b.HasOne("ThanksCardServer2.Models.Employee", "From")
                         .WithMany()
-                        .HasForeignKey("DestinationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ThanksCardServer2.Models.Employee", "Sender")
-                        .WithMany()
-                        .HasForeignKey("SenderId")
+                        .HasForeignKey("FromId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -284,11 +278,17 @@ namespace ThanksCardAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Destination");
+                    b.HasOne("ThanksCardServer2.Models.Employee", "To")
+                        .WithMany()
+                        .HasForeignKey("ToId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Sender");
+                    b.Navigation("From");
 
                     b.Navigation("Title");
+
+                    b.Navigation("To");
                 });
 
             modelBuilder.Entity("ThanksCardServer2.Models.Belong", b =>
