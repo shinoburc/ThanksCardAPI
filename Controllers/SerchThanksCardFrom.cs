@@ -23,7 +23,7 @@ namespace ThanksCardServer2.Controllers
         {
             return await _context.ThanksCards
                 .Include(ThanksCard => ThanksCard.From)
-                .Where(s => s.From.Name.Contains(searchThanksCard.SearchWord)).ToListAsync();
+                .Where(s => s.From.Name.Contains(searchThanksCard.SearchWord1)).ToListAsync();
 
         }
     }

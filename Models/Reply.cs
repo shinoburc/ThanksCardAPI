@@ -5,10 +5,10 @@ namespace ThanksCardServer2.Models
 {
     public class Reply
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Content { get; set; }
-        public int Sonzai_Id { get; set; }
-        public long EmployeeId { get; set; }
-        public virtual Employee Employee { get; set; }
+        public long Sonzai_Id { get; set; }
+        public long UserId { get; set; }
+        public virtual User User { get; set; }
     }
 }

@@ -6,28 +6,28 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ThanksCardAPI.Migrations
 {
-    public partial class AddMonthModel : Migration
+    public partial class AddUserModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Belongs",
+                name: "Departments",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Code = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
                     SonzaiId = table.Column<long>(type: "bigint", nullable: false),
-                    Parent_Id = table.Column<long>(type: "bigint", nullable: false),
                     ParentId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Belongs", x => x.Id);
+                    table.PrimaryKey("PK_Departments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Belongs_Belongs_ParentId",
+                        name: "FK_Departments_Departments_ParentId",
                         column: x => x.ParentId,
-                        principalTable: "Belongs",
+                        principalTable: "Departments",
                         principalColumn: "Id");
                 });
 
@@ -59,26 +59,24 @@ namespace ThanksCardAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Employees",
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Cd = table.Column<long>(type: "bigint", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Password = table.Column<string>(type: "text", nullable: true),
                     Sonzai_Id = table.Column<long>(type: "bigint", nullable: false),
-                    Belongs_Id = table.Column<long>(type: "bigint", nullable: false),
-                    BelongsId = table.Column<long>(type: "bigint", nullable: true),
-                    IsEmployee = table.Column<bool>(type: "boolean", nullable: false)
+                    IsEmployee = table.Column<bool>(type: "boolean", nullable: false),
+                    DepartmentId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Employees", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Employees_Belongs_BelongsId",
-                        column: x => x.BelongsId,
-                        principalTable: "Belongs",
+                        name: "FK_Users_Departments_DepartmentId",
+                        column: x => x.DepartmentId,
+                        principalTable: "Departments",
                         principalColumn: "Id");
                 });
 
@@ -86,19 +84,19 @@ namespace ThanksCardAPI.Migrations
                 name: "Replys",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Content = table.Column<string>(type: "text", nullable: true),
-                    Sonzai_Id = table.Column<int>(type: "integer", nullable: false),
-                    EmployeeId = table.Column<long>(type: "bigint", nullable: false)
+                    Sonzai_Id = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Replys", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Replys_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "Employees",
+                        name: "FK_Replys_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -123,21 +121,27 @@ namespace ThanksCardAPI.Migrations
                 {
                     table.PrimaryKey("PK_ThanksCards", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ThanksCards_Employees_FromId",
-                        column: x => x.FromId,
-                        principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ThanksCards_Employees_ToId",
-                        column: x => x.ToId,
-                        principalTable: "Employees",
+                        name: "FK_ThanksCards_Templates_TemplateId",
+                        column: x => x.TemplateId,
+                        principalTable: "Templates",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ThanksCards_Titles_TitleId",
                         column: x => x.TitleId,
                         principalTable: "Titles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ThanksCards_Users_FromId",
+                        column: x => x.FromId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ThanksCards_Users_ToId",
+                        column: x => x.ToId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -149,17 +153,17 @@ namespace ThanksCardAPI.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ThanksCardId = table.Column<long>(type: "bigint", nullable: false),
-                    ReplyId = table.Column<long>(type: "bigint", nullable: false),
-                    ReplyId1 = table.Column<int>(type: "integer", nullable: true)
+                    ReplyId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Midles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Midles_Replys_ReplyId1",
-                        column: x => x.ReplyId1,
+                        name: "FK_Midles_Replys_ReplyId",
+                        column: x => x.ReplyId,
                         principalTable: "Replys",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Midles_ThanksCards_ThanksCardId",
                         column: x => x.ThanksCardId,
@@ -169,19 +173,14 @@ namespace ThanksCardAPI.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Belongs_ParentId",
-                table: "Belongs",
+                name: "IX_Departments_ParentId",
+                table: "Departments",
                 column: "ParentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employees_BelongsId",
-                table: "Employees",
-                column: "BelongsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Midles_ReplyId1",
+                name: "IX_Midles_ReplyId",
                 table: "Midles",
-                column: "ReplyId1");
+                column: "ReplyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Midles_ThanksCardId",
@@ -189,14 +188,19 @@ namespace ThanksCardAPI.Migrations
                 column: "ThanksCardId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Replys_EmployeeId",
+                name: "IX_Replys_UserId",
                 table: "Replys",
-                column: "EmployeeId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ThanksCards_FromId",
                 table: "ThanksCards",
                 column: "FromId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ThanksCards_TemplateId",
+                table: "ThanksCards",
+                column: "TemplateId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ThanksCards_TitleId",
@@ -207,6 +211,11 @@ namespace ThanksCardAPI.Migrations
                 name: "IX_ThanksCards_ToId",
                 table: "ThanksCards",
                 column: "ToId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_DepartmentId",
+                table: "Users",
+                column: "DepartmentId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -215,22 +224,22 @@ namespace ThanksCardAPI.Migrations
                 name: "Midles");
 
             migrationBuilder.DropTable(
-                name: "Templates");
-
-            migrationBuilder.DropTable(
                 name: "Replys");
 
             migrationBuilder.DropTable(
                 name: "ThanksCards");
 
             migrationBuilder.DropTable(
-                name: "Employees");
+                name: "Templates");
 
             migrationBuilder.DropTable(
                 name: "Titles");
 
             migrationBuilder.DropTable(
-                name: "Belongs");
+                name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Departments");
         }
     }
 }

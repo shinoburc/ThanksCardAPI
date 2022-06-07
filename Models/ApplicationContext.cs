@@ -9,8 +9,8 @@ namespace ThanksCardServer2.Models
             : base(options)
         {
         }
-        public DbSet<Belong> Belongs { get; set; }
-        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Title> Titles { get; set; }    
         public DbSet<Template> Templates { get; set; }
         public DbSet<Midle>Midles { get; set; }

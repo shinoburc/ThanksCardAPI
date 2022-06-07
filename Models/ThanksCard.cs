@@ -8,9 +8,9 @@ namespace ThanksCardServer2.Models
         public long Id { get; set; }
         public DateOnly Date { get; set; }
         public long FromId { get; set; }
-        public virtual Employee From { get; set; }
+        public virtual User From { get; set; }
         public long ToId { get; set; }
-        public virtual Employee To { get; set; }
+        public virtual User To { get; set; }
         public long TitleId { get; set; }
         public virtual Title Title { get; set; }
         public string Content { get; set; }

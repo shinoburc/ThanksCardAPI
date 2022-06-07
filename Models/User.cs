@@ -3,15 +3,15 @@ using ThanksCardServer2.Models;
 
 namespace ThanksCardServer2.Models
 {
-    public class Employee
+    public class User
     {
         public long Id { get; set; }
-        public long Cd { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
         public long Sonzai_Id { get; set; }
-        public long Belongs_Id { get; set; }
-        public virtual Belong Belongs { get; set; }
         public bool IsEmployee { get; set; }
+        // 多対1: User エンティティは1つの Department エンティティに属する
+        public long? DepartmentId { get; set; }
+        public virtual Department Department { get; set; }
     }
 }
